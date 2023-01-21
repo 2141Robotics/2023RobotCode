@@ -11,7 +11,7 @@ public class Constants
 	public static final int MS_DELAY = 30;
 
 	/** Settings are {kF, kP, kI, kD} *///		kF  kP	 kI  kD
-	public static final double[] PID_SETTINGS = { 0d, 0.15d, 0d, 1.50d };
+	public static final double[] PID_SETTINGS = { 1d, 0.15d, 0d, 1.50d };
 
 	/** 2π */
 	public static final double TWO_PI = 2d * Math.PI;
@@ -49,7 +49,7 @@ public class Constants
 	/** distance precision of auton */
 	public static final double DIST_PRECISION = 1*TICKS_PER_INCH;
 
-	public static final int TICKS_PER_100MS = 21517;
+	public static final int TICKS_PER_100MS = 2151;//7
 
 	public static final int INCHES_PER_FOOT = 12;
 }

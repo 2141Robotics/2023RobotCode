@@ -251,7 +251,7 @@ public class SwerveDrive implements IControllerMovement
 
 	public void turnToAngle(double angle) {
 		while ((this.gyro.getAngle() * Constants.DEG_TO_RAD) - angle < Constants.ANGLE_PRECISION) {
-			this.move(new Vec2d(0,0), pid.calculate(this.gyro.getAngle(), angle));
+			this.move(new Vec2d(0,0), 0.1 * pid.calculate(this.gyro.getAngle(), angle));
 		}
 	}
 

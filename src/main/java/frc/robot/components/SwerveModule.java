@@ -81,6 +81,12 @@ public class SwerveModule
 		this.steeringMotor.config_kI(PID_ID, Constants.PID_SETTINGS[2], Constants.MS_DELAY);
 		this.steeringMotor.config_kD(PID_ID, Constants.PID_SETTINGS[3], Constants.MS_DELAY);
 
+		// PID tune the driving motor.
+		this.drivingMotor.config_kF(PID_ID, Constants.PID_SETTINGS[0], Constants.MS_DELAY);
+		this.drivingMotor.config_kP(PID_ID, Constants.PID_SETTINGS[1], Constants.MS_DELAY);
+		this.drivingMotor.config_kI(PID_ID, Constants.PID_SETTINGS[2], Constants.MS_DELAY);
+		this.drivingMotor.config_kD(PID_ID, Constants.PID_SETTINGS[3], Constants.MS_DELAY);
+
 		// Configure the can coder.
 		this.canCoder.configFactoryDefault(Constants.MS_DELAY);
 		this.canCoder.configSensorInitializationStrategy(SensorInitializationStrategy.BootToAbsolutePosition, Constants.MS_DELAY);
@@ -185,8 +191,9 @@ public class SwerveModule
 		}
 
 		// Set the driving motor's speed.
-		// this.drivingMotor.set(ControlMode.PercentOutput, vec.getLength() * this.speedMultiplier);
-		this.drivingMotor.set(ControlMode.Velocity, vec.getLength() * this.speedMultiplier * Constants.TICKS_PER_100MS);
+		this.drivingMotor.set(ControlMode.PercentOutput, vec.getLength() * this.speedMultiplier);
+		//this.drivingMotor.set(ControlMode.Velocity, vec.getLength() * this.speedMultiplier * Constants.TICKS_PER_100MS );
+
 	}
 
 	/**
