@@ -82,6 +82,7 @@ public class SwerveModule
 		this.steeringMotor.config_kD(PID_ID, Constants.PID_SETTINGS[3], Constants.MS_DELAY);
 
 		// PID tune the driving motor.
+		this.drivingMotor.selectProfileSlot(PID_ID, 0);
 		this.drivingMotor.config_kF(PID_ID, Constants.PID_SETTINGS[0], Constants.MS_DELAY);
 		this.drivingMotor.config_kP(PID_ID, Constants.PID_SETTINGS[1], Constants.MS_DELAY);
 		this.drivingMotor.config_kI(PID_ID, Constants.PID_SETTINGS[2], Constants.MS_DELAY);
@@ -93,7 +94,8 @@ public class SwerveModule
 		this.canCoder.configMagnetOffset(this.canOffset, Constants.MS_DELAY);
 		this.canCoder.setPositionToAbsolute(Constants.MS_DELAY);
 
-		this.drivingMotor.configMotionAcceleration(Constants.TICK_TO_DEG * 180, Constants.MS_DELAY);
+		this.drivingMotor.configMotionAcceleration(15000, Constants.MS_DELAY);
+		this.drivingMotor.configMotionCruiseVelocity(6000, Constants.MS_DELAY);
 		// Reset the motor rotations.
 		this.reset();
 	}

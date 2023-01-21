@@ -49,7 +49,7 @@ public class Robot extends TimedRobot
 	}
 
 	@Override
-	public void autonomousInit() {
+	public void autonomousPeriodic() {
 		Autonomous auton = new Autonomous(DRIVETRAIN);
 		auton.testAuto();
 	}
