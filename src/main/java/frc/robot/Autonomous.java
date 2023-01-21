@@ -22,7 +22,7 @@ public class Autonomous {
 		// rotate 90 degrees
 		this.sd.turnToAngle(Constants.PI_OVER_TWO);
 		// move forward 10 feet
-		this.sd.moveDistance(new Vec2d(Constants.PI_OVER_TWO, 10 * Constants.INCHES_PER_FOOT * Constants.TICKS_PER_INCH));
+		this.sd.moveDistance(new Vec2d(Constants.PI_OVER_TWO, (18 + (8/12) ) * Constants.INCHES_PER_FOOT * Constants.TICKS_PER_INCH));
 	}
 
 }
