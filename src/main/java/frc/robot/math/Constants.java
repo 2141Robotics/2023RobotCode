@@ -50,4 +50,6 @@ public class Constants
 	public static final double DIST_PRECISION = 1*TICKS_PER_INCH;
 
 	public static final int TICKS_PER_100MS = 21517;
+
+	public static final int INCHES_PER_FOOT = 12;
 }

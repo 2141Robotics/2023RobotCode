@@ -47,4 +47,10 @@ public class Robot extends TimedRobot
 		// Move the drivetrian.
 		DRIVETRAIN.move(PRIMARY_CONTROLLER);
 	}
+
+	@Override
+	public void autonomousInit() {
+		Autonomous auton = new Autonomous(DRIVETRAIN);
+		auton.testAuto();
+	}
 }
