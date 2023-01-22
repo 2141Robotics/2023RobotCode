@@ -11,7 +11,7 @@ import com.ctre.phoenix.sensors.WPI_CANCoder;
 import frc.robot.math.Constants;
 import frc.robot.math.Vec2d;
 
-import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+
 
 /**
  * Container for one swerve module. Wraps two falcon500s: one for driving and one for steering.
@@ -94,10 +94,13 @@ public class SwerveModule
 		this.canCoder.configMagnetOffset(this.canOffset, Constants.MS_DELAY);
 		this.canCoder.setPositionToAbsolute(Constants.MS_DELAY);
 
+		this.drivingMotor.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, PID_ID, Constants.MS_DELAY);
 		this.drivingMotor.configMotionAcceleration(15000, Constants.MS_DELAY);
+		// Set the cruise velocity to 6000 sensor units per 100ms.
 		this.drivingMotor.configMotionCruiseVelocity(6000, Constants.MS_DELAY);
 		// Reset the motor rotations.
 		this.reset();
+		
 	}
 
 	/**

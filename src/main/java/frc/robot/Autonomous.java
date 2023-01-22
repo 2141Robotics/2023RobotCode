@@ -1,17 +1,8 @@
 package frc.robot;
-import com.kauailabs.navx.frc.AHRS;
-
 import frc.robot.components.SwerveDrive;
-import frc.robot.components.SwerveModule;
 import frc.robot.math.Constants;
 
 import frc.robot.math.Vec2d;
-
-import java.io.Console;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import edu.wpi.first.math.controller.PIDController;
 
 public class Autonomous {
 	private int counter = 0;
