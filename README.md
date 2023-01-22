@@ -1,4 +1,4 @@
-# FRC-2022-Spartonics
+# FRC-2023-Spartonics
 ![.](https://img.shields.io/static/v1?label=powered%20by&message=electricity&color=5e9741&labelColor=c1d72f&style=for-the-badge)
 ![.](https://img.shields.io/static/v1?label=60%%20of%20the%20time&message=works%20every%20time&color=5593c8&labelColor=a7bfc1&style=for-the-badge)
 ![.](https://img.shields.io/static/v1?label=designed%20in&message=etch-a-sketch&color=5593c8&labelColor=a7bfc1&style=for-the-badge)
