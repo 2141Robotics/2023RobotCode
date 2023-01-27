@@ -88,7 +88,7 @@ public class SwerveDrive implements IControllerMovement
 			resetTimer--;
 		}
 	}
-
+	/** Move using a combination of two Xbox controllers */
 	@Override
 	public void move(XboxController... controllers)
 	{
@@ -173,6 +173,7 @@ public class SwerveDrive implements IControllerMovement
 	
 	/**
 	 * Set a timer for reseting the motors.
+	 * Used to reset the motors multiple times.
 	 */
 	public void resetMotors()
 	{

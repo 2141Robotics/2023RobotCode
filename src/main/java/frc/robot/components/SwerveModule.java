@@ -94,6 +94,7 @@ public class SwerveModule
 		this.canCoder.configMagnetOffset(this.canOffset, Constants.MS_DELAY);
 		this.canCoder.setPositionToAbsolute(Constants.MS_DELAY);
 
+		// other stuff that nobody knows why it works
 		this.drivingMotor.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, PID_ID, Constants.MS_DELAY);
 		this.drivingMotor.configMotionAcceleration(15000, Constants.MS_DELAY);
 		// Set the cruise velocity to 6000 sensor units per 100ms.

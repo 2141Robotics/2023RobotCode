@@ -5,6 +5,12 @@ import java.util.Arrays;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.math.Vec2d;
 
+/**
+ * Class for handling controller inputs.
+ * Especially for handling two controllers at the same time
+ * 
+ * @author 2141 Spartonics
+ */
 public class ControllerHandler
 {
 	public static boolean getButton(EnumButton button, XboxController... controllers)
