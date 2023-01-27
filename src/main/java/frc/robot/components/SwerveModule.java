@@ -3,6 +3,7 @@ package frc.robot.components;
 import java.util.Arrays;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.sensors.SensorInitializationStrategy;
@@ -76,6 +77,7 @@ public class SwerveModule
 		this.steeringMotor.configAllowableClosedloopError(0, PID_ID, Constants.MS_DELAY);
 
 		// PID tune the steering motor.
+		this.steeringMotor.selectProfileSlot(PID_ID, 0);
 		this.steeringMotor.config_kF(PID_ID, Constants.PID_SETTINGS[0], Constants.MS_DELAY);
 		this.steeringMotor.config_kP(PID_ID, Constants.PID_SETTINGS[1], Constants.MS_DELAY);
 		this.steeringMotor.config_kI(PID_ID, Constants.PID_SETTINGS[2], Constants.MS_DELAY);
@@ -95,10 +97,23 @@ public class SwerveModule
 		this.canCoder.setPositionToAbsolute(Constants.MS_DELAY);
 
 		// other stuff that nobody knows why it works
+		this.drivingMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 10, Constants.MS_DELAY);
+		this.drivingMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 10, Constants.MS_DELAY);
 		this.drivingMotor.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, PID_ID, Constants.MS_DELAY);
-		this.drivingMotor.configMotionAcceleration(15000, Constants.MS_DELAY);
+
+		// i think this is why it didn't work. TODO: Figuire out why this works/test this.
+		this.drivingMotor.configNominalOutputForward(0, Constants.MS_DELAY);
+		this.drivingMotor.configNominalOutputReverse(0, Constants.MS_DELAY);
+		this.drivingMotor.configPeakOutputForward(1, Constants.MS_DELAY);
+		this.drivingMotor.configPeakOutputReverse(-1, Constants.MS_DELAY);
+
+		this.drivingMotor.configNeutralDeadband(0.001);
+
+
 		// Set the cruise velocity to 6000 sensor units per 100ms.
 		this.drivingMotor.configMotionCruiseVelocity(6000, Constants.MS_DELAY);
+		this.drivingMotor.configMotionAcceleration(15000, Constants.MS_DELAY);
+
 		// Reset the motor rotations.
 		this.reset();
 		
