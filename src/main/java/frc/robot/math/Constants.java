@@ -11,7 +11,7 @@ public class Constants
 	public static final int MS_DELAY = 30;
 
 	/** Settings are {kF, kP, kI, kD} *///		kF  kP	 kI  kD
-	public static final double[] PID_SETTINGS = { 1d, 0.15d, 0d, 1.50d };
+	public static final double[] PID_SETTINGS =  { 0d, 0.5d, 0.0d, 0.0d };
 
 	/** 2π */
 	public static final double TWO_PI = 2d * Math.PI;
