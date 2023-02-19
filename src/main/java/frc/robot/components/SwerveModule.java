@@ -109,6 +109,27 @@ public class SwerveModule
 
 		this.drivingMotor.configNeutralDeadband(0.001);
 
+		//---
+		this.drivingMotor.configNominalOutputForward(0d, Constants.MS_DELAY);
+		this.drivingMotor.configNominalOutputReverse(0d, Constants.MS_DELAY);
+		this.drivingMotor.configPeakOutputForward(1d, Constants.MS_DELAY);
+		this.drivingMotor.configPeakOutputReverse(-1d, Constants.MS_DELAY);
+		this.drivingMotor.configAllowableClosedloopError(0, PID_ID, Constants.MS_DELAY);
+
+		// PID tune the steering motor.
+		this.drivingMotor.selectProfileSlot(PID_ID, 0);
+		this.drivingMotor.config_kF(PID_ID, Constants.PID_SETTINGS[0], Constants.MS_DELAY);
+		this.drivingMotor.config_kP(PID_ID, Constants.PID_SETTINGS[1], Constants.MS_DELAY);
+		this.drivingMotor.config_kI(PID_ID, Constants.PID_SETTINGS[2], Constants.MS_DELAY);
+		this.drivingMotor.config_kD(PID_ID, Constants.PID_SETTINGS[3], Constants.MS_DELAY);
+   		System.out.println("done config");
+
+  		this.drivingMotor.configMotionAcceleration(512*9);
+  	  	this.drivingMotor.configMotionCruiseVelocity(15*9*2048/360);
+	    this.drivingMotor.configMotionSCurveStrength(5);
+   		this.drivingMotor.configNeutralDeadband(0.01);
+		//--
+
 
 		// Set the cruise velocity to 6000 sensor units per 100ms.
 		this.drivingMotor.configMotionCruiseVelocity(6000, Constants.MS_DELAY);
@@ -166,8 +187,9 @@ public class SwerveModule
 
 		// Update the two motor's with the new values.
  		this.steeringMotor.set(ControlMode.Position, this.motorRotation / Constants.TWO_PI * 26214.4d);
-		this.drivingMotor.set(ControlMode.PercentOutput, vec.getLength());
 	}
+
+	
 
 	/**
 	 * Rotates the steering motor in the direction of the passed vector, and sets the driving 
