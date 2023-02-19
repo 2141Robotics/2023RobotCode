@@ -5,8 +5,7 @@ import java.util.Collections;
 import java.util.List;
 
 import com.kauailabs.navx.frc.AHRS;
-import com.ctre.phoenix.motorcontrol.can.TalonFX;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+
 
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.math.Constants;
