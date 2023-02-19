@@ -52,7 +52,7 @@ public class SwerveDrive implements IControllerMovement
 		this.maxRot = maxRotation;
 		this.gyro = gyroscope;
 		this.modules = Collections.unmodifiableList(Arrays.asList(swerveModules));
-		this.pid = new PIDController(1,2,3);
+		this.pid = new PIDController(0.5,0,0);
 	}
 
 	/**
@@ -187,22 +187,7 @@ public class SwerveDrive implements IControllerMovement
 	{
 		this.gyro.reset();
 	}
-	/**
-	 * Average encoder distance of the drive modules
-	 * @return distance in encoder ticks before gear ratio
-	 */
-	public double averageDist() {
-		int totaldist = 0;
-		for (int i = 0; i <4; i++) {
-			totaldist += this.modules.get(i).drivingMotor.getSelectedSensorPosition();
-		}
-		return totaldist/4;
-	}
-	public void resetDistance(){
-		for (int i = 0; i <4; i++) {
-			this.modules.get(i).drivingMotor.setSelectedSensorPosition(0d);
-		}
-	}
+	
 
 	/**
 	 * Checks if the robot is resetting or if the gyro is callibrating.
@@ -250,17 +235,39 @@ public class SwerveDrive implements IControllerMovement
 		return builder.toString();
 	}
 
+	/** Rotation for Autonomous (Radians) */
 	public void turnToAngle(double angle) {
-		while ((this.gyro.getAngle() * Constants.DEG_TO_RAD) - angle < Constants.ANGLE_PRECISION) {
-			this.move(new Vec2d(0,0), 0.1 * pid.calculate(this.gyro.getAngle(), angle));
-		}
+		
+		this.move(new Vec2d(0,0), 0.1 * pid.calculate(this.gyro.getAngle() * Constants.DEG_TO_RAD, angle));
 	}
 
+	public double gettingangle(){
+		return this.gyro.getAngle() * Constants.DEG_TO_RAD;
+	}
+
+	/** Move for Autonomious */
 	public void moveDistance(Vec2d vec) {
-		for (var i=0; i<4; i++) {
-			this.modules.get(0).drivingMotor.set(ControlMode.MotionMagic, vec.getLength());
+		this.modules.forEach( (module) -> {
 			
+			module.setMotion(vec);
+			module.drivingMotor.set(ControlMode.MotionMagic, vec.getLength());
+		});
+	}
+    
+	/**
+	 * Average encoder distance of the drive modules
+	 * @return distance in encoder ticks before gear ratio
+	 */
+	public double averageDist() {
+		int totaldist = 0;
+		for (int i = 0; i <4; i++) {
+			totaldist += this.modules.get(i).drivingMotor.getSelectedSensorPosition();
+		}
+		return totaldist/4;
+	}
+	public void resetDistance(){
+		for (int i = 0; i <4; i++) {
+			this.modules.get(i).drivingMotor.setSelectedSensorPosition(0d);
 		}
 	}
-
 }
