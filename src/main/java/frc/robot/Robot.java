@@ -81,7 +81,6 @@ public class Robot extends TimedRobot
 	}
 
 	public void testAuto(){
-		CommandScheduler.getInstance().schedule(new move(DRIVETRAIN, new Vec2d((1*Constants.INCHES_PER_FOOT*Constants.TICKS_PER_INCH),0)));
-		CommandScheduler.getInstance().schedule(new rotate(DRIVETRAIN, Math.PI));
+		CommandScheduler.getInstance().schedule(new move(DRIVETRAIN, new Vec2d((1*Constants.INCHES_PER_FOOT*Constants.TICKS_PER_INCH),0)).andThen(new rotate(DRIVETRAIN, Math.PI)));
 	}
 }
