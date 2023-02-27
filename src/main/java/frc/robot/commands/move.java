@@ -10,22 +10,30 @@ public class move extends CommandBase {
    private final Vec2d vec;
 
    public move(SwerveDrive sd, Vec2d vec) {
-    this.sd = sd;
-    this.vec = vec;
+   this.sd = sd;
+   this.vec = vec;
+   this.sd.resetDistance();
+   System.out.println("start");
    }
 
    @Override
    public void execute(){
     this.sd.moveDistance(vec);
+    System.out.println("execute");
    }
 
    @Override
    public boolean isFinished(){
-    return Math.abs(sd.averageDist() - vec.getLength()) <= Constants.DIST_PRECISION;
+   return Math.abs(sd.averageDist() - vec.getLength()) <= Constants.DIST_PRECISION;
    }
 
-   public void end(){
+   @Override
+   public void end(boolean interupted){
+   
     this.sd.resetDistance();
+    this.sd.stop();
+    System.out.println("ended");
+
    }
 
 

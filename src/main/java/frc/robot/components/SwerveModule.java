@@ -83,33 +83,9 @@ public class SwerveModule
 		this.steeringMotor.config_kI(PID_ID, Constants.PID_SETTINGS[2], Constants.MS_DELAY);
 		this.steeringMotor.config_kD(PID_ID, Constants.PID_SETTINGS[3], Constants.MS_DELAY);
 
-		// PID tune the driving motor.
-		this.drivingMotor.selectProfileSlot(PID_ID, 0);
-		this.drivingMotor.config_kF(PID_ID, Constants.PID_SETTINGS[0], Constants.MS_DELAY);
-		this.drivingMotor.config_kP(PID_ID, Constants.PID_SETTINGS[1], Constants.MS_DELAY);
-		this.drivingMotor.config_kI(PID_ID, Constants.PID_SETTINGS[2], Constants.MS_DELAY);
-		this.drivingMotor.config_kD(PID_ID, Constants.PID_SETTINGS[3], Constants.MS_DELAY);
-
-		// Configure the can coder.
-		this.canCoder.configFactoryDefault(Constants.MS_DELAY);
-		this.canCoder.configSensorInitializationStrategy(SensorInitializationStrategy.BootToAbsolutePosition, Constants.MS_DELAY);
-		this.canCoder.configMagnetOffset(this.canOffset, Constants.MS_DELAY);
-		this.canCoder.setPositionToAbsolute(Constants.MS_DELAY);
-
-		// other stuff that nobody knows why it works
-		this.drivingMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 10, Constants.MS_DELAY);
-		this.drivingMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 10, Constants.MS_DELAY);
 		this.drivingMotor.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, PID_ID, Constants.MS_DELAY);
-
-		// i think this is why it didn't work. TODO: Figuire out why this works/test this.
-		this.drivingMotor.configNominalOutputForward(0, Constants.MS_DELAY);
-		this.drivingMotor.configNominalOutputReverse(0, Constants.MS_DELAY);
-		this.drivingMotor.configPeakOutputForward(1, Constants.MS_DELAY);
-		this.drivingMotor.configPeakOutputReverse(-1, Constants.MS_DELAY);
-
-		this.drivingMotor.configNeutralDeadband(0.001);
-
-		//---
+		this.drivingMotor.setSensorPhase(true);
+		this.drivingMotor.setInverted(false);
 		this.drivingMotor.configNominalOutputForward(0d, Constants.MS_DELAY);
 		this.drivingMotor.configNominalOutputReverse(0d, Constants.MS_DELAY);
 		this.drivingMotor.configPeakOutputForward(1d, Constants.MS_DELAY);
@@ -122,19 +98,13 @@ public class SwerveModule
 		this.drivingMotor.config_kP(PID_ID, Constants.PID_SETTINGS[1], Constants.MS_DELAY);
 		this.drivingMotor.config_kI(PID_ID, Constants.PID_SETTINGS[2], Constants.MS_DELAY);
 		this.drivingMotor.config_kD(PID_ID, Constants.PID_SETTINGS[3], Constants.MS_DELAY);
-   		System.out.println("done config");
+    	System.out.println("done config");
 
-  		this.drivingMotor.configMotionAcceleration(512*9);
-  	  	this.drivingMotor.configMotionCruiseVelocity(15*9*2048/360);
-	    this.drivingMotor.configMotionSCurveStrength(5);
-   		this.drivingMotor.configNeutralDeadband(0.01);
-		//--
-
-
-		// Set the cruise velocity to 6000 sensor units per 100ms.
-		this.drivingMotor.configMotionCruiseVelocity(6000, Constants.MS_DELAY);
-		this.drivingMotor.configMotionAcceleration(15000, Constants.MS_DELAY);
-
+    	this.drivingMotor.configMotionAcceleration(512*9);
+    	this.drivingMotor.configMotionCruiseVelocity(15*9*2048);
+    	this.drivingMotor.configMotionSCurveStrength(5);
+    	this.drivingMotor.configNeutralDeadband(0.01);
+		
 		// Reset the motor rotations.
 		this.reset();
 		
@@ -165,10 +135,10 @@ public class SwerveModule
 	 * and subtract 90° from the module rotations in the SwerveDrive class. Calculations by Alex Green.
 	 * 
 	 * @param vec the vector representing the module's movement
-	 * @deprecated in favor of {@link #setMotion(Vec2d) setMotion}.
+	 * @notdeprecated in favor of {@link #setMotion(Vec2d) setMotion}.
 	 * @see <a href="https://www.desmos.com/calculator/dgkniftpn6">Alex's Calculations</a>
 	 */
-	@Deprecated
+
 	public void setAngle(Vec2d vec)
 	{
 		// Get the angle of the passed vector.
@@ -186,7 +156,7 @@ public class SwerveModule
 		}
 
 		// Update the two motor's with the new values.
- 		this.steeringMotor.set(ControlMode.Position, this.motorRotation / Constants.TWO_PI * 26214.4d);
+ 		this.steeringMotor.set(ControlMode.Position, (this.motorRotation-Constants.PI_OVER_TWO) * Constants.RAD_TO_TICK * 12.8d);
 	}
 
 	
@@ -205,13 +175,14 @@ public class SwerveModule
 	public void setMotion(Vec2d vec)
 	{
 		// Only rotate if the vector's length is greater than 0 to prevent NaN values.
-		if(vec.getLengthSquared() != 0d)
+		/* 
+		if(false)
 		{
 			// Turn the steering motor's rotation into a vector.
 			Vec2d motorVec = new Vec2d(this.motorRotation, false);
 
 			// Invert the driving motor if the wheel is facing more than 90° away from the target angle.
-			this.speedMultiplier = vec.distanceTo(motorVec) > Constants.PI_OVER_TWO ? -1 : 1;
+			//this.speedMultiplier = vec.distanceTo(motorVec) > Constants.PI_OVER_TWO ? -1 : 1;
 
 			// Get the angles from the two vectors.
 			double motorAngle = motorVec.getAngle();
@@ -226,15 +197,16 @@ public class SwerveModule
 			angles[4] = angles[0] - Math.PI;
 
 			// Sort the array to get the shortest angle at the front.
-			Arrays.sort(angles, (d1, d2) -> Double.compare(Math.abs(d1), Math.abs(d2)));
+			//Arrays.sort(angles, (d1, d2) -> Double.compare(Math.abs(d1), Math.abs(d2)));
 			
 			// Set the steering motor's rotation.
-			this.motorRotation += angles[0];
+			this.motorRotation += vecAngle-motorAngle;
 			this.steeringMotor.set(ControlMode.Position, this.motorRotation * Constants.RAD_TO_TICK * 12.8d);
-		}
+		}*/
+		this.setAngle(vec);
 
 		// Set the driving motor's speed.
-		this.drivingMotor.set(ControlMode.PercentOutput, vec.getLength() * this.speedMultiplier);
+		this.drivingMotor.set(ControlMode.PercentOutput, vec.getLength());
 		//this.drivingMotor.set(ControlMode.Velocity, vec.getLength() * this.speedMultiplier * Constants.TICKS_PER_100MS );
 
 	}
@@ -254,7 +226,7 @@ public class SwerveModule
 	 * 
 	 * @return The drive motor
 	 */
-	public WPI_TalonFX getDriveMotor()
+     	public WPI_TalonFX getDriveMotor()
 	{
 		return this.drivingMotor;
 	}

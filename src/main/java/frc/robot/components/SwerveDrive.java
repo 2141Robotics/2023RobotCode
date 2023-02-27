@@ -51,7 +51,7 @@ public class SwerveDrive implements IControllerMovement
 		this.maxRot = maxRotation;
 		this.gyro = gyroscope;
 		this.modules = Collections.unmodifiableList(Arrays.asList(swerveModules));
-		this.pid = new PIDController(0.5,0,0);
+		this.pid = new PIDController(3,0.025,0.025);
 	}
 
 	/**
@@ -136,13 +136,13 @@ public class SwerveDrive implements IControllerMovement
 		}
 
 		// Create a 15% deadzone on the left joystick.
-		if(movementVec.getLengthSquared() < 0.0225d)
+		if(movementVec.getLengthSquared() < (0.15*0.15))
 		{
 			movementVec = movementVec.scale(0d);
 		}
 
 		// Create a 10% deadzone on the right joystick.
-		if(Math.abs(rightXAxis) < 0.25d)
+		if(Math.abs(rightXAxis) < (0.15*0.15))
 		{
 			rightXAxis = 0d;
 		}
@@ -246,11 +246,18 @@ public class SwerveDrive implements IControllerMovement
 
 	/** Move for Autonomious */
 	public void moveDistance(Vec2d vec) {
-		this.modules.forEach( (module) -> {
-			
-			module.setMotion(vec);
-			module.drivingMotor.set(ControlMode.MotionMagic, vec.getLength());
-		});
+		for(SwerveModule module : this.modules) {
+			module.setAngle(vec);
+			module.drivingMotor.set(0.1);
+			//module.drivingMotor.set(ControlMode.MotionMagic, vec.getLength());
+		}
+	}
+
+	public void stop(){
+		for(SwerveModule module : this.modules) {
+			module.drivingMotor.set(0);
+			//module.drivingMotor.set(ControlMode.MotionMagic, vec.getLength());
+		}
 	}
     
 	/**
@@ -265,8 +272,8 @@ public class SwerveDrive implements IControllerMovement
 		return totaldist/4;
 	}
 	public void resetDistance(){
-		for (int i = 0; i <4; i++) {
-			this.modules.get(i).drivingMotor.setSelectedSensorPosition(0d);
+		for (SwerveModule module : this.modules) {
+			module.drivingMotor.setSelectedSensorPosition(0d);
 		}
 	}
 }

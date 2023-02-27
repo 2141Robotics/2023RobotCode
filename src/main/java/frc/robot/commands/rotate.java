@@ -3,6 +3,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.components.SwerveDrive;
 import frc.robot.math.Constants;
 
+
 public class rotate extends CommandBase{
     private final SwerveDrive sd;
     private final double a;
@@ -10,6 +11,7 @@ public class rotate extends CommandBase{
     public rotate(SwerveDrive sd, double a){
         this.sd = sd;
         this.a = a;
+        sd.resetGyro();
     }
 
     @Override
@@ -19,6 +21,14 @@ public class rotate extends CommandBase{
 
     @Override
     public boolean isFinished(){
-        return Math.abs(sd.gettingangle() - this.a ) <= Constants.ANGLE_PRECISION;
+        return Math.abs(sd.gettingangle() - a ) <= Constants.ANGLE_PRECISION;
+    }
+
+    @Override
+    public void end(boolean interupted){
+        System.out.println("done");
+        sd.resetGyro();
+        sd.resetMotors();
+        sd.resetDistance();
     }
 }

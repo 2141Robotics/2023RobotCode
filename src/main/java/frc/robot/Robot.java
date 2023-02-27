@@ -13,9 +13,12 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
-
+import frc.robot.commands.TestAuto;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.move;
 import frc.robot.commands.rotate;
+import frc.robot.commands.delay;
 
 /**
  * The main robot class where everything is run.
@@ -27,7 +30,7 @@ public class Robot extends TimedRobot
 
 
 	/** The main drivetrain of the robot. */
-	private static final SwerveDrive DRIVETRAIN = new SwerveDrive(0.1d, 1d, 0.5d, 
+	private static final SwerveDrive DRIVETRAIN = new SwerveDrive(0.1d, 1d, 0.8d, 
 		new AHRS(SPI.Port.kMXP),
 		new SwerveModule(2, 1, 11, -3d * Math.PI / 4d, -274.482421875d),
 		new SwerveModule(4, 3, 12, -Math.PI / 4d, -228.33984375d),
@@ -58,7 +61,7 @@ public class Robot extends TimedRobot
 	@Override
 	public void teleopPeriodic()
 	{
-		prototype.run(PRIMARY_CONTROLLER);
+		prototype.run(PRIMARY_CONTROLLER, DRIVETRAIN);
 
 		// Move the drivetrian.
 		DRIVETRAIN.move(PRIMARY_CONTROLLER);
@@ -66,6 +69,8 @@ public class Robot extends TimedRobot
 
 	@Override
 	public void autonomousInit() {
+		DRIVETRAIN.resetMotors();
+		DRIVETRAIN.getGyro().calibrate();
 		CommandScheduler.getInstance().enable();
 		testAuto();
 	}
@@ -81,6 +86,12 @@ public class Robot extends TimedRobot
 	}
 
 	public void testAuto(){
-		CommandScheduler.getInstance().schedule(new move(DRIVETRAIN, new Vec2d((1*Constants.INCHES_PER_FOOT*Constants.TICKS_PER_INCH),0)).andThen(new rotate(DRIVETRAIN, Math.PI)));
+		CommandScheduler.getInstance().schedule(new SequentialCommandGroup(
+			new move(DRIVETRAIN, new Vec2d((1*Constants.INCHES_PER_FOOT*Constants.TICKS_PER_INCH),0)), 
+			new WaitCommand(5),
+			new rotate(DRIVETRAIN, Math.PI)	
+		));
+																		   
+	
 	}
 }
