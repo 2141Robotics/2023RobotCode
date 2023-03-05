@@ -10,15 +10,12 @@ import frc.robot.components.SwerveModule;
 import frc.robot.math.Constants;
 import frc.robot.math.Vec2d;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.wpilibj2.command.Commands;
-import frc.robot.commands.TestAuto;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.move;
-import frc.robot.commands.rotate;
-import frc.robot.commands.delay;
+import frc.robot.Robot;
+
 
 /**
  * The main robot class where everything is run.
@@ -46,11 +43,9 @@ public class Robot extends TimedRobot
 	@Override
 	public void robotInit()
 	{
-		// Reset the drivetrain and cailbrate the gyroscope.
-		DRIVETRAIN.getGyro().calibrate();
-		DRIVETRAIN.resetMotors();
-	}
 
+		
+	}
 	@Override
 	public void disabledExit()
 	{
@@ -61,6 +56,8 @@ public class Robot extends TimedRobot
 	@Override
 	public void teleopPeriodic()
 	{
+		
+
 		prototype.run(PRIMARY_CONTROLLER, DRIVETRAIN);
 
 		// Move the drivetrian.
@@ -69,8 +66,8 @@ public class Robot extends TimedRobot
 
 	@Override
 	public void autonomousInit() {
-		DRIVETRAIN.resetMotors();
 		DRIVETRAIN.getGyro().calibrate();
+		DRIVETRAIN.resetMotors();
 		CommandScheduler.getInstance().enable();
 		testAuto();
 	}
@@ -87,10 +84,11 @@ public class Robot extends TimedRobot
 
 	public void testAuto(){
 		CommandScheduler.getInstance().schedule(new SequentialCommandGroup(
-			new move(DRIVETRAIN, new Vec2d((1*Constants.INCHES_PER_FOOT*Constants.TICKS_PER_INCH),0)), 
-			new WaitCommand(5),
-			new rotate(DRIVETRAIN, Math.PI)	
-		));
+			new move(DRIVETRAIN, new Vec2d((5*Constants.INCHES_PER_FOOT*Constants.TICKS_PER_INCH),0)), 
+			new WaitCommand(2),
+			new move(DRIVETRAIN, new Vec2d((5*Constants.INCHES_PER_FOOT*Constants.TICKS_PER_INCH),0)),
+			new WaitCommand(2)
+			));
 																		   
 	
 	}

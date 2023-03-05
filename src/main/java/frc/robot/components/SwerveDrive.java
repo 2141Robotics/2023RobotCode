@@ -167,7 +167,7 @@ public class SwerveDrive implements IControllerMovement
 		rightXAxis = rightXAxis * rightXAxis * rightXAxis;
 
 		// Move the drivetrain using the calculated values.
-		this.move(movementVec, -rightXAxis);
+		this.move(movementVec, rightXAxis);
 	}
 	
 	/**
@@ -237,7 +237,7 @@ public class SwerveDrive implements IControllerMovement
 	/** Rotation for Autonomous (Radians) */
 	public void turnToAngle(double angle) {
 		
-		this.move(new Vec2d(0,0), 0.1 * pid.calculate(this.gyro.getAngle() * Constants.DEG_TO_RAD, angle));
+		this.move(new Vec2d(Double.MIN_VALUE,Double.MIN_NORMAL), angle > 0 ? 0.15 : -0.15);
 	}
 
 	public double gettingangle(){

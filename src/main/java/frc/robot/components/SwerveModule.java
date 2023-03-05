@@ -205,7 +205,7 @@ public class SwerveModule
 		}*/
 		this.setAngle(vec);
 
-		// Set the driving motor's speed.
+		// Set the driving motor's speed. (max motor speed is 20k units per 100ms)
 		this.drivingMotor.set(ControlMode.PercentOutput, vec.getLength());
 		//this.drivingMotor.set(ControlMode.Velocity, vec.getLength() * this.speedMultiplier * Constants.TICKS_PER_100MS );
 
