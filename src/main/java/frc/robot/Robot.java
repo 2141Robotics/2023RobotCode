@@ -71,15 +71,19 @@ public class Robot extends TimedRobot
 		CommandScheduler.getInstance().enable();
 		testAuto();
 	}
+	@Override
+	public void robotPeriodic(){
+		CommandScheduler.getInstance().run();
+	}
 
 	@Override
 	public void autonomousPeriodic() {
-		CommandScheduler.getInstance().run();
+		
 		
 	}
 	@Override
 	public void autonomousExit() {
-		CommandScheduler.getInstance().disable();
+
 	}
 
 	public void testAuto(){
