@@ -5,6 +5,8 @@ import com.kauailabs.navx.frc.AHRS;
 //importsssssssss
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.TimedRobot;
+import frc.robot.components.Arm;
+import frc.robot.components.Claw;
 import frc.robot.components.SwerveDrive;
 import frc.robot.components.SwerveModule;
 import frc.robot.math.Constants;
@@ -36,7 +38,7 @@ public class Robot extends TimedRobot
 
 	/** Slot 0 controller. */
 	private static final XboxController PRIMARY_CONTROLLER = new XboxController(0);
-
+	private static final Arm arm = new Arm(8, 9, 10, 5);
 	private static final Prototype prototype = new Prototype();
 
 
@@ -59,7 +61,7 @@ public class Robot extends TimedRobot
 		
 
 		prototype.run(PRIMARY_CONTROLLER, DRIVETRAIN);
-
+		arm.move(PRIMARY_CONTROLLER);
 		// Move the drivetrian.
 		DRIVETRAIN.move(PRIMARY_CONTROLLER);
 	}
@@ -93,7 +95,5 @@ public class Robot extends TimedRobot
 			new move(DRIVETRAIN, new Vec2d((5*Constants.INCHES_PER_FOOT*Constants.TICKS_PER_INCH),0)),
 			new WaitCommand(2)
 			));
-																		   
-	
 	}
 }
