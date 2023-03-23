@@ -38,14 +38,14 @@ public class Robot extends TimedRobot
 
 	/** Slot 0 controller. */
 	private static final XboxController PRIMARY_CONTROLLER = new XboxController(0);
-	private static final Arm arm = new Arm(8, 9, 10, 5);
+	private static final Arm arm = new Arm(0, 9, 10, 0);
 	private static final Prototype prototype = new Prototype();
 
 
 	@Override
 	public void robotInit()
 	{
-
+		arm.reset();
 		
 	}
 	@Override
@@ -58,8 +58,6 @@ public class Robot extends TimedRobot
 	@Override
 	public void teleopPeriodic()
 	{
-		
-
 		prototype.run(PRIMARY_CONTROLLER, DRIVETRAIN);
 		arm.move(PRIMARY_CONTROLLER);
 		// Move the drivetrian.

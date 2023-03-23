@@ -10,7 +10,10 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
 import com.ctre.phoenix.motorcontrol.TalonFXInvertType;
 import com.ctre.phoenix.motorcontrol.RemoteSensorSource;
+import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.FollowerType;
+
 import frc.robot.math.Constants;
 
 public class Arm {
@@ -27,9 +30,7 @@ public class Arm {
     Vec2d VERTICAL = new Vec2d(0, 44);
     Vec2d CURRENT_POS = new Vec2d(0,44);
 
-    public void setupFalcon(WPI_TalonFX talon) {
-        
-    int PID_ID = 0;
+    public void setupFalcon(WPI_TalonFX talon, int PID_ID) {
 
     // Miscellaneous settings.
     talon.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, PID_ID, Constants.MS_DELAY);
@@ -59,16 +60,19 @@ public class Arm {
         this.m1 = new WPI_TalonFX(m1ID);
         this.m2 = new WPI_TalonFX(m2ID);
         this.canCoder = new WPI_CANCoder(canCoderID);
-    
+    }
 
+    public void moveAngleMotor(ControlMode mode, double value){
+        this.m1.set(mode, value);
+        this.m2.set(mode, -(value));
     }
 
     public void reset() {
         this.m1.setInverted(TalonFXInvertType.Clockwise);
-        this.m2.setInverted(TalonFXInvertType.OpposeMaster);
-        this.setupFalcon(m1);
-        this.setupFalcon(m2);
-        this.setupFalcon(extender);
+        this.m2.setInverted(TalonFXInvertType.CounterClockwise);
+        this.setupFalcon(m1, 1);
+        this.setupFalcon(m2, 2);
+        this.setupFalcon(extender, 3);
         this.m1.configRemoteFeedbackFilter(this.canCoder.getDeviceID(), RemoteSensorSource.CANCoder, 0);
         this.m1.configSelectedFeedbackSensor(FeedbackDevice.RemoteSensor0);
         this.canCoder.configFactoryDefault();
@@ -92,8 +96,26 @@ public class Arm {
         } else if (ctrlr.getRightBumper()) {
             this.claw.close();
         }
+
+        if (ctrlr.getPOV() == 0) {
+            moveAngleMotor(ControlMode.PercentOutput, 0.1);
+        }
+        else if(ctrlr.getPOV() == 90){
+            this.extender.set(0.1);
+        }
+        else if (ctrlr.getPOV() == 180) {
+            moveAngleMotor(ControlMode.PercentOutput, -0.1);
+        }
+        else if(ctrlr.getPOV() == 270){
+            this.extender.set(-0.1);
+        }
+        else {
+            this.m1.set(0);
+            this.extender.set(0);
+        }
+        
     }
-    
+
     public void move(Vec2d vec) {
 
         this.setRotation(vec.getAngle());
@@ -102,8 +124,7 @@ public class Arm {
     }
 
     public void setRotation(Double angle){
-        this.m2.follow(m1);
-        this.m1.set(ControlMode.MotionMagic, angle * 9 * Constants.RAD_TO_DEG);
+        this.moveAngleMotor(ControlMode.MotionMagic, angle * 9 * Constants.RAD_TO_DEG);
     }
 
     public void setLength(Double dist) {
