@@ -97,22 +97,47 @@ public class Arm {
             this.claw.close();
         }
 
+        //POV
+
+        double angleSpeed = 0.2;
+        double extensionSpeed = 0.5;
+
         if (ctrlr.getPOV() == 0 || ctrlr2.getPOV() == 0) {
-            moveAngleMotor(ControlMode.PercentOutput, -0.1);
+            moveAngleMotor(ControlMode.PercentOutput, -angleSpeed);
+        }
+        else if(ctrlr.getPOV() == 45 || ctrlr2.getPOV() == 45){
+            this.extender.set(extensionSpeed);
+            moveAngleMotor(ControlMode.PercentOutput, -angleSpeed);
         }
         else if(ctrlr.getPOV() == 90 || ctrlr2.getPOV() == 90){
-            this.extender.set(0.1);
+            this.extender.set(extensionSpeed);
+        }
+        else if(ctrlr.getPOV() == 135 || ctrlr2.getPOV() == 135){
+            this.extender.set(extensionSpeed);
+            moveAngleMotor(ControlMode.PercentOutput, angleSpeed);
         }
         else if (ctrlr.getPOV() == 180 || ctrlr2.getPOV() == 180) {
-            moveAngleMotor(ControlMode.PercentOutput, 0.1);
+            moveAngleMotor(ControlMode.PercentOutput, angleSpeed);
         }
-        else if(ctrlr.getPOV() == 270 || ctrlr2.getPOV() == 270){
+        else if (ctrlr.getPOV() == 225 || ctrlr2.getPOV() == 225) {
+            moveAngleMotor(ControlMode.PercentOutput, angleSpeed);
             this.extender.set(-0.1);
+        }        
+        else if(ctrlr.getPOV() == 270 || ctrlr2.getPOV() == 270){
+            this.extender.set(-extensionSpeed);
         }
+        else if(ctrlr.getPOV() == 315 || ctrlr2.getPOV() == 315){
+            this.extender.set(-extensionSpeed);
+            moveAngleMotor(ControlMode.PercentOutput, -angleSpeed);
+        }
+
+
         else {
             moveAngleMotor(ControlMode.PercentOutput, 0);
             this.extender.set(0);
         }
+
+        //POV
     }
 
     public void move(Vec2d vec) {
