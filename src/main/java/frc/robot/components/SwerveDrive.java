@@ -13,8 +13,6 @@ import frc.robot.math.Vec2d;
 
 import edu.wpi.first.math.controller.PIDController;
 import java.lang.Math;
-
-import com.ctre.phoenix.motorcontrol.ControlMode;
 /**
  * Container for the robot's swerve drivetrain. Wraps a gyroscope and swerve modules.
  * 
