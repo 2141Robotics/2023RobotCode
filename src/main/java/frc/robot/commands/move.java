@@ -10,10 +10,15 @@ public class move extends CommandBase {
    private final Vec2d vec;
 
    public move(SwerveDrive sd, Vec2d vec) {
-   this.sd = sd;
-   this.vec = vec;
-   this.sd.resetDistance();
-   System.out.println("start");
+      this.sd = sd;
+      this.vec = vec;
+      //this.sd.resetDistance();
+      System.out.println("start");
+   }
+
+   @Override
+   public void initialize() {
+      this.sd.resetDistance();
    }
 
    @Override
@@ -32,7 +37,7 @@ public class move extends CommandBase {
    
     this.sd.resetDistance();
     this.sd.stop();
-    System.out.println("ended");
+    System.out.println("ended move");
 
    }
 
