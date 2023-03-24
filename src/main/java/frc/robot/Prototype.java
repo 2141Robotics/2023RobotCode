@@ -13,8 +13,8 @@ public class Prototype {
         this.arm = new WPI_TalonFX(0);
     }
 
-    public void run(XboxController controller, SwerveDrive sd){
-        if (controller.getAButton()) {
+    public void run(XboxController controller, XboxController controller2, SwerveDrive sd){
+        if (controller.getAButton() || controller2.getAButton()) {
             sd.moveDistance(new Vec2d(10000000,0));
         }
     }
