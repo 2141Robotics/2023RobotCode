@@ -64,7 +64,7 @@ public class Arm {
 
     public void moveAngleMotor(ControlMode mode, double value){
         this.m1.set(mode, value);
-        this.m2.set(mode, -(value));
+        this.m2.set(mode, -value);
     }
 
     public void reset() {
@@ -80,40 +80,39 @@ public class Arm {
     
     }
 
-    public void move(XboxController ctrlr) {
-        if (ctrlr.getYButton()) {
+    public void move(XboxController ctrlr, XboxController ctrlr2) {
+        if (ctrlr.getYButton() || ctrlr2.getYButton()) {
             this.CURRENT_POS = this.pos_HIGH;
-        } else if (ctrlr.getXButton()) {
+        } else if (ctrlr.getXButton() || ctrlr2.getXButton()) {
             this.CURRENT_POS = this.pos_MID;
-        } else if (ctrlr.getBButton()) {
+        } else if (ctrlr.getBButton() || ctrlr2.getBButton()) {
             this.CURRENT_POS = this.pos_COLLECT;
-        } else if (ctrlr.getAButton()) {
+        } else if (ctrlr.getAButton() || ctrlr2.getAButton()) {
             this.CURRENT_POS = this.pos_GROUND;
         }
 
-        if (ctrlr.getLeftBumper()) {
+        if (ctrlr.getLeftBumper() || ctrlr2.getLeftBumper()) {
             this.claw.open();
-        } else if (ctrlr.getRightBumper()) {
+        } else if (ctrlr.getRightBumper() || ctrlr2.getRightBumper()) {
             this.claw.close();
         }
 
-        if (ctrlr.getPOV() == 0) {
-            moveAngleMotor(ControlMode.PercentOutput, 0.1);
-        }
-        else if(ctrlr.getPOV() == 90){
-            this.extender.set(0.1);
-        }
-        else if (ctrlr.getPOV() == 180) {
+        if (ctrlr.getPOV() == 0 || ctrlr2.getPOV() == 0) {
             moveAngleMotor(ControlMode.PercentOutput, -0.1);
         }
-        else if(ctrlr.getPOV() == 270){
+        else if(ctrlr.getPOV() == 90 || ctrlr2.getPOV() == 90){
+            this.extender.set(0.1);
+        }
+        else if (ctrlr.getPOV() == 180 || ctrlr2.getPOV() == 180) {
+            moveAngleMotor(ControlMode.PercentOutput, 0.1);
+        }
+        else if(ctrlr.getPOV() == 270 || ctrlr2.getPOV() == 270){
             this.extender.set(-0.1);
         }
         else {
-            this.m1.set(0);
+            moveAngleMotor(ControlMode.PercentOutput, 0);
             this.extender.set(0);
         }
-        
     }
 
     public void move(Vec2d vec) {
