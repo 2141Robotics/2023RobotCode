@@ -6,8 +6,6 @@ import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.TimedRobot;
 import frc.robot.components.Arm;
-import frc.robot.components.Claw;
-import frc.robot.components.IControllerMovement;
 import frc.robot.components.SwerveDrive;
 import frc.robot.components.SwerveModule;
 import frc.robot.math.Constants;
@@ -15,7 +13,6 @@ import frc.robot.math.Vec2d;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.autoBalance;
 import frc.robot.commands.move;
 import frc.robot.Robot;
@@ -42,7 +39,6 @@ public class Robot extends TimedRobot
 	private static final XboxController PRIMARY_CONTROLLER = new XboxController(0);
 	private static final XboxController SECONDARY_CONTROLLER = new XboxController(1);
 	private static final Arm arm = new Arm(0, 9, 10, 0);
-	private static final Prototype prototype = new Prototype();
 
 
 	@Override
