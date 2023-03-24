@@ -1,8 +1,6 @@
 package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.components.Arm;
 import frc.robot.components.Claw;
-import frc.robot.math.Vec2d;
 
 @Deprecated
 public class clawCommand extends CommandBase {
