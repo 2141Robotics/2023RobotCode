@@ -10,10 +10,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
 import com.ctre.phoenix.motorcontrol.TalonFXInvertType;
 import com.ctre.phoenix.motorcontrol.RemoteSensorSource;
-import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
-import com.ctre.phoenix.motorcontrol.FollowerType;
-
 import frc.robot.math.Constants;
 
 public class Arm {
@@ -99,7 +96,7 @@ public class Arm {
 
         //POV
 
-        double angleSpeed = 0.2;
+        double angleSpeed = 0.25;
         double extensionSpeed = 0.5;
 
         if (ctrlr.getPOV() == 0 || ctrlr2.getPOV() == 0) {
