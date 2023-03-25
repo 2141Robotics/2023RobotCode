@@ -8,7 +8,6 @@ import com.kauailabs.navx.frc.AHRS;
 
 
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.math.Constants;
 import frc.robot.math.Vec2d;
 
