@@ -17,12 +17,12 @@ public class autoBalance extends CommandBase {
     public boolean movewithpitch(AHRS gyro, SwerveDrive dt){
 
         if((this.gyro.getPitch() > 184) ){
-            this.dt.move(new Vec2d(0,Constants.TICKS_PER_INCH * 1), 0);
+            this.dt.move(new Vec2d(0,0.1), 0);
             return false;
         }
 
         else if(this.gyro.getPitch() < 176){
-            this.dt.move(new Vec2d(0,Constants.TICKS_PER_INCH * -1), 0);
+            this.dt.move(new Vec2d(0,0.1), 0);
             return false;
         }
 
