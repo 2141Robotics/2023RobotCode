@@ -60,6 +60,9 @@ public class Arm {
     }
 
     public void moveAngleMotor(ControlMode mode, double value){
+        /*if (this.m2.getSelectedSensorPosition() >= 2048 * 5/360 && mode == ControlMode.PercentOutput && value < 0) {
+            value = 0;
+        }*/ 
         this.m1.set(mode, value);
         this.m2.set(mode, -value);
     }
@@ -146,6 +149,7 @@ public class Arm {
 
     public void setRotation(Double angle){
         this.moveAngleMotor(ControlMode.MotionMagic, angle * 9 * Constants.RAD_TO_DEG);
+
     }
 
     public void setLength(Double dist) {
