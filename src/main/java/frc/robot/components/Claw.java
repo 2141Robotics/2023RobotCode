@@ -9,10 +9,10 @@ public class Claw {
     
     public void open(){
         s1.set(Value.kForward);
-        s2.set(Value.kForward);
+        s2.set(Value.kReverse);
     }
     public void close() {
         s1.set(Value.kReverse);
-        s2.set(Value.kReverse);
+        s2.set(Value.kForward);
     }
 }
