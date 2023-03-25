@@ -8,6 +8,7 @@ import com.kauailabs.navx.frc.AHRS;
 
 
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.math.Constants;
 import frc.robot.math.Vec2d;
 
@@ -52,6 +53,8 @@ public class SwerveDrive implements IControllerMovement
 		this.pid = new PIDController(3,0.025,0.025);
 	}
 
+
+
 	/**
 	 * Move's the swerve drive. The direction vector is automatically adjusted by the 
 	 * gyroscope. Both the magnitude of the directional vector and the rotational speed 
@@ -66,7 +69,7 @@ public class SwerveDrive implements IControllerMovement
 		if(this.canDrive())
 		{
 			// Vector representation of the speed and direction of the drivetrain.
-			Vec2d driveVec = directionVec.rotate(this.gyro.getYaw() + 90d, true);
+			Vec2d driveVec = directionVec.rotate(this.gyro.getYaw() + 270d, true);
 			
 			this.modules.forEach(m ->
 			{
