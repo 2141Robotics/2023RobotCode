@@ -3,7 +3,6 @@ import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.components.SwerveDrive;
-import frc.robot.math.Constants;
 import frc.robot.math.Vec2d;
 
 public class autoBalance extends CommandBase {
