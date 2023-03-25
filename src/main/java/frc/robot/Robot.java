@@ -11,6 +11,7 @@ import frc.robot.components.SwerveModule;
 import frc.robot.math.Constants;
 import frc.robot.math.Vec2d;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.autoBalance;
@@ -31,9 +32,9 @@ public class Robot extends TimedRobot
 	private static final SwerveDrive DRIVETRAIN = new SwerveDrive(0.1d, 1d, 0.8d, 
 		new AHRS(SPI.Port.kMXP),
 		new SwerveModule(2, 1, 11, -3d * Math.PI / 4d, -274.482421875d),
-		new SwerveModule(4, 3, 12, -Math.PI / 4d, -228.33984375d),
+		new SwerveModule(4, 3, 12, -Math.PI / 4d, -232.20703125d),
 		new SwerveModule(6, 5, 13, Math.PI / 4d, -272.900390625d),
-		new SwerveModule(8, 7, 14, 3d * Math.PI / 4d, -299.091796875d));
+		new SwerveModule(8, 7, 14, 3d * Math.PI / 4d, -297.00390625d));
 
 	/** Slot 0 controller. */
 	private static final XboxController PRIMARY_CONTROLLER = new XboxController(0);
@@ -76,6 +77,15 @@ public class Robot extends TimedRobot
 		CommandScheduler.getInstance().run();
 	}
 
+	public void dash() {
+		SmartDashboard.putNumber("Gyro Angle", this.DRIVETRAIN.getGyro().getAngle());
+		for (SwerveModule module : this.DRIVETRAIN.getModules()) {
+			SmartDashboard.putNumber("Swerve Module Angle (Cancoder ID: " + module.getCanCoder().getDeviceID() + ")" , module.getCanCoder().getAbsolutePosition());
+
+		}
+
+	}
+
 	//______________________________________________________________________
 	//This is the beggining of Autonomous Code -Marcus <3
 
@@ -93,7 +103,7 @@ public class Robot extends TimedRobot
 	
 	public void autonomousMiddle(){
 		CommandScheduler.getInstance().schedule(new SequentialCommandGroup(
-			new move(DRIVETRAIN, new Vec2d((FieldMeasurments.Back_To_Middle_Of_Charger - 10), 0)),
+			new move(DRIVETRAIN, new Vec2d((FieldMeasurments.Back_To_Middle_Of_Charger), 0)),
 			new autoBalance(DRIVETRAIN.getGyro(), DRIVETRAIN)
 			
 		));
