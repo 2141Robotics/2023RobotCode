@@ -5,6 +5,7 @@ import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.sensors.WPI_CANCoder;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.math.Constants;
 import frc.robot.math.Vec2d;
 
@@ -26,13 +27,14 @@ public class SwerveModule
 	/** The can coder measuring the module's absolute rotaiton. */
 	private final WPI_CANCoder canCoder;
 	/** The can coder's rotational offset. This value must be manually set through phoenix tuner. */
-	private final double canOffset;
+	public final double canOffset;
 	/** The direction of rotation relative to the center of the drivetrain. */
 	private final double rotDireciton;
 	/** The steering motor rotation measured in radians. */
 	private double motorRotation;
 	/** The speed multiplier used to invert the speed of the drive motor in {@link #setMotion(Vec2d) setMotion}. */
 	private int speedMultiplier;
+	
 
 	/**
 	 * @param driveMotor driving motor ID
@@ -53,6 +55,7 @@ public class SwerveModule
 		this.speedMultiplier = 1;
 	
 	}
+
 
 	/**
 	 * Configures the motors and sets the steering motor's rotation to zero.
@@ -152,7 +155,7 @@ public class SwerveModule
 		}
 
 		// Update the two motor's with the new values.
- 		this.steeringMotor.set(ControlMode.Position, (this.motorRotation-Constants.PI_OVER_TWO) * Constants.RAD_TO_TICK * 12.8d);
+ 		this.steeringMotor.set(ControlMode.Position, (this.motorRotation) * Constants.RAD_TO_TICK * 12.8d);
 	}
 
 	
