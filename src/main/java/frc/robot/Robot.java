@@ -78,8 +78,8 @@ public class Robot extends TimedRobot
 	}
 
 	public void dash() {
-		SmartDashboard.putNumber("Gyro Angle", this.DRIVETRAIN.getGyro().getAngle());
-		for (SwerveModule module : this.DRIVETRAIN.getModules()) {
+		SmartDashboard.putNumber("Gyro Angle", DRIVETRAIN.getGyro().getAngle());
+		for (SwerveModule module : DRIVETRAIN.getModules()) {
 			SmartDashboard.putNumber("Swerve Module Angle (Cancoder ID: " + module.getCanCoder().getDeviceID() + ")" , module.getCanCoder().getAbsolutePosition());
 
 		}
