@@ -27,9 +27,7 @@ public class Arm {
     Vec2d VERTICAL = new Vec2d(0, 44);
     Vec2d CURRENT_POS = new Vec2d(0,44);
 
-    public void setupFalcon(WPI_TalonFX talon) {
-        
-    int PID_ID = 0;
+    public void setupFalcon(WPI_TalonFX talon, int PID_ID) {
 
     // Miscellaneous settings.
     talon.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, PID_ID, Constants.MS_DELAY);
@@ -59,16 +57,22 @@ public class Arm {
         this.m1 = new WPI_TalonFX(m1ID);
         this.m2 = new WPI_TalonFX(m2ID);
         this.canCoder = new WPI_CANCoder(canCoderID);
-    
+    }
 
+    public void moveAngleMotor(ControlMode mode, double value){
+        /*if (this.m2.getSelectedSensorPosition() >= 2048 * 5/360 && mode == ControlMode.PercentOutput && value < 0) {
+            value = 0;
+        }*/ 
+        this.m1.set(mode, value);
+        this.m2.set(mode, -value);
     }
 
     public void reset() {
         this.m1.setInverted(TalonFXInvertType.Clockwise);
-        this.m2.setInverted(TalonFXInvertType.OpposeMaster);
-        this.setupFalcon(m1);
-        this.setupFalcon(m2);
-        this.setupFalcon(extender);
+        this.m2.setInverted(TalonFXInvertType.CounterClockwise);
+        this.setupFalcon(m1, 1);
+        this.setupFalcon(m2, 2);
+        this.setupFalcon(extender, 3);
         this.m1.configRemoteFeedbackFilter(this.canCoder.getDeviceID(), RemoteSensorSource.CANCoder, 0);
         this.m1.configSelectedFeedbackSensor(FeedbackDevice.RemoteSensor0);
         this.canCoder.configFactoryDefault();
@@ -76,24 +80,66 @@ public class Arm {
     
     }
 
-    public void move(XboxController ctrlr) {
-        if (ctrlr.getYButton()) {
+    public void move(XboxController ctrlr, XboxController ctrlr2) {
+        if (ctrlr.getYButton() || ctrlr2.getYButton()) {
             this.CURRENT_POS = this.pos_HIGH;
-        } else if (ctrlr.getXButton()) {
+        } else if (ctrlr.getXButton() || ctrlr2.getXButton()) {
             this.CURRENT_POS = this.pos_MID;
-        } else if (ctrlr.getBButton()) {
+        } else if (ctrlr.getBButton() || ctrlr2.getBButton()) {
             this.CURRENT_POS = this.pos_COLLECT;
-        } else if (ctrlr.getAButton()) {
+        } else if (ctrlr.getAButton() || ctrlr2.getAButton()) {
             this.CURRENT_POS = this.pos_GROUND;
         }
 
-        if (ctrlr.getLeftBumper()) {
+        if (ctrlr.getLeftBumper() || ctrlr2.getLeftBumper()) {
             this.claw.open();
-        } else if (ctrlr.getRightBumper()) {
+        } else if (ctrlr.getRightBumper() || ctrlr2.getRightBumper()) {
             this.claw.close();
         }
+
+        //POV
+
+        double angleSpeed = 0.25;
+        double extensionSpeed = 0.5;
+
+        if (ctrlr.getPOV() == 0 || ctrlr2.getPOV() == 0) {
+            moveAngleMotor(ControlMode.PercentOutput, -angleSpeed);
+        }
+        else if(ctrlr.getPOV() == 45 || ctrlr2.getPOV() == 45){
+            this.extender.set(extensionSpeed);
+            moveAngleMotor(ControlMode.PercentOutput, -angleSpeed);
+        }
+        else if(ctrlr.getPOV() == 90 || ctrlr2.getPOV() == 90){
+            this.extender.set(extensionSpeed);
+        }
+        else if(ctrlr.getPOV() == 135 || ctrlr2.getPOV() == 135){
+            this.extender.set(extensionSpeed);
+            moveAngleMotor(ControlMode.PercentOutput, angleSpeed);
+        }
+        else if (ctrlr.getPOV() == 180 || ctrlr2.getPOV() == 180) {
+            moveAngleMotor(ControlMode.PercentOutput, angleSpeed);
+        }
+        else if (ctrlr.getPOV() == 225 || ctrlr2.getPOV() == 225) {
+            moveAngleMotor(ControlMode.PercentOutput, angleSpeed);
+            this.extender.set(-0.1);
+        }        
+        else if(ctrlr.getPOV() == 270 || ctrlr2.getPOV() == 270){
+            this.extender.set(-extensionSpeed);
+        }
+        else if(ctrlr.getPOV() == 315 || ctrlr2.getPOV() == 315){
+            this.extender.set(-extensionSpeed);
+            moveAngleMotor(ControlMode.PercentOutput, -angleSpeed);
+        }
+
+
+        else {
+            moveAngleMotor(ControlMode.PercentOutput, 0);
+            this.extender.set(0);
+        }
+
+        //POV
     }
-    
+
     public void move(Vec2d vec) {
 
         this.setRotation(vec.getAngle());
@@ -102,8 +148,8 @@ public class Arm {
     }
 
     public void setRotation(Double angle){
-        this.m2.follow(m1);
-        this.m1.set(ControlMode.MotionMagic, angle * 9 * Constants.RAD_TO_DEG);
+        this.moveAngleMotor(ControlMode.MotionMagic, angle * 9 * Constants.RAD_TO_DEG);
+
     }
 
     public void setLength(Double dist) {

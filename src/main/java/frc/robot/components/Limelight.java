@@ -1,6 +1,4 @@
 package frc.robot.components;
-import java.util.Vector;
-
 import edu.wpi.first.networktables.NetworkTableInstance;
 import frc.robot.math.Vector3D;
 public class Limelight

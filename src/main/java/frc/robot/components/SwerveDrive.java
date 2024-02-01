@@ -13,8 +13,6 @@ import frc.robot.math.Vec2d;
 
 import edu.wpi.first.math.controller.PIDController;
 import java.lang.Math;
-
-import com.ctre.phoenix.motorcontrol.ControlMode;
 /**
  * Container for the robot's swerve drivetrain. Wraps a gyroscope and swerve modules.
  * 
@@ -54,6 +52,8 @@ public class SwerveDrive implements IControllerMovement
 		this.pid = new PIDController(3,0.025,0.025);
 	}
 
+
+
 	/**
 	 * Move's the swerve drive. The direction vector is automatically adjusted by the 
 	 * gyroscope. Both the magnitude of the directional vector and the rotational speed 
@@ -68,7 +68,7 @@ public class SwerveDrive implements IControllerMovement
 		if(this.canDrive())
 		{
 			// Vector representation of the speed and direction of the drivetrain.
-			Vec2d driveVec = directionVec.rotate(this.gyro.getYaw() + 90d, true);
+			Vec2d driveVec = directionVec.rotate(this.gyro.getYaw() + 270d, true);
 			
 			this.modules.forEach(m ->
 			{
